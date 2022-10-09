@@ -1,0 +1,96 @@
+#include<stdio.h>
+#include<math.h>
+#include<time.h>
+ 
+int board[20],count;
+ 
+int main()
+{
+
+ clock_t start,end;
+ double cpu_time_used;
+ int n,i,j;
+ void nqueen(int row,int n);
+ 
+ printf(" - N Queens Problem Using Backtracking -");
+ printf("\n\nEnter number of Queens:");
+ scanf("%d",&n);
+ start = clock();
+ nqueen(1,n);
+ end = clock();
+ cpu_time_used =((double)(end-start))/CLOCKS_PER_SEC;
+ 
+ printf("\nThe processing  time taken is %f \n", cpu_time_used);
+ printf("The NO of Solutions is %d",count);
+ return 0;
+}
+ 
+//function for printing the board
+void print(int n)
+{
+ int i,j;
+ printf("\n\nSolution %d:\n\n",count);
+ 
+ for(i=1;i<=n;++i)
+  printf("\t%d",i);
+ 
+ for(i=1;i<=n;++i)
+ {
+  printf("\n\n%d",i);
+  for(j=1;j<=n;++j) //for nxn board
+  {
+   if(board[i]==j)
+    printf("\tQ"); //queen at i,j position
+   else
+    printf("\t*"); //empty slot
+  }
+ }
+}
+ 
+/*funtion to check conflicts
+If no conflict for desired postion returns 1 otherwise returns 0*/
+int conflict(int row,int column)
+{
+ int i;
+ for(i=1;i<=row-1;++i)
+ {
+  //checking column and digonal conflicts
+  if(board[i]==column)//board value assignes in nqueen function
+   return 0;
+  else
+   if(abs(board[i]-column)==abs(i-row))//checks if queen at diagonal position
+    return 0;
+ }
+ 
+ return 1; //no conflicts
+}
+ 
+//function to check for proper positioning of queen
+void nqueen(int row,int n)
+{
+ int column;
+ for(column=1;column<=n;++column)
+ {
+  if(conflict(row,column))
+  {
+   board[row]=column; //no conflicts so place queen
+   if(row==n) //dead end
+   {
+   
+   	count++;
+   	if(count<=2)
+   	{
+   		print(n);	   }
+   
+   // print(n); //printing the board configuration
+	
+	
+	
+	}
+   else //try queen with next position
+    nqueen(row+1,n);
+	
+	
+  }
+ }
+}
